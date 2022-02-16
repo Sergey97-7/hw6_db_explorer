@@ -1,5 +1,7 @@
 package main
 
-// тут вы пишете код
-// обращаю ваше внимание - в этом задании запрещены глобальные переменные
-
+//todo remove
+//func NewDbExplorer22(db *sql.DB) (http.HandlerFunc, error) {
+//handler, err := createDB(db)
+//return handler, err
+//}

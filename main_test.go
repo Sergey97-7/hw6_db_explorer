@@ -105,7 +105,7 @@ func TestApis(t *testing.T) {
 	ts := httptest.NewServer(handler)
 
 	cases := []Case{
-		Case{
+		{
 			Path: "/", // список таблиц
 			Result: CR{
 				"response": CR{
@@ -113,25 +113,25 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path:   "/unknown_table",
 			Status: http.StatusNotFound,
 			Result: CR{
 				"error": "unknown table",
 			},
 		},
-		Case{
+		{
 			Path: "/items",
 			Result: CR{
 				"response": CR{
 					"records": []CR{
-						CR{
+						{
 							"id":          1,
 							"title":       "database/sql",
 							"description": "Рассказать про базы данных",
 							"updated":     "rvasily",
 						},
-						CR{
+						{
 							"id":          2,
 							"title":       "memcache",
 							"description": "Рассказать про мемкеш с примером использования",
@@ -141,13 +141,13 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path:  "/items",
 			Query: "limit=1",
 			Result: CR{
 				"response": CR{
 					"records": []CR{
-						CR{
+						{
 							"id":          1,
 							"title":       "database/sql",
 							"description": "Рассказать про базы данных",
@@ -157,13 +157,13 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path:  "/items",
 			Query: "limit=1&offset=1",
 			Result: CR{
 				"response": CR{
 					"records": []CR{
-						CR{
+						{
 							"id":          2,
 							"title":       "memcache",
 							"description": "Рассказать про мемкеш с примером использования",
@@ -173,7 +173,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path: "/items/1",
 			Result: CR{
 				"response": CR{
@@ -186,7 +186,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path:   "/items/100500",
 			Status: http.StatusNotFound,
 			Result: CR{
@@ -195,7 +195,7 @@ func TestApis(t *testing.T) {
 		},
 
 		// тут идёт создание и редактирование
-		Case{
+		{
 			Path:   "/items/",
 			Method: http.MethodPut,
 			Body: CR{
@@ -212,7 +212,7 @@ func TestApis(t *testing.T) {
 		// это пример хрупкого теста
 		// если много раз вызывать один и тот же тест - записи будут добавляться
 		// поэтому придётся сделать сброс базы каждый раз в PrepareTestData
-		Case{
+		{
 			Path: "/items/3",
 			Result: CR{
 				"response": CR{
@@ -225,7 +225,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodPost,
 			Body: CR{
@@ -237,7 +237,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path: "/items/3",
 			Result: CR{
 				"response": CR{
@@ -252,7 +252,7 @@ func TestApis(t *testing.T) {
 		},
 
 		// обновление null-поля в таблице
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodPost,
 			Body: CR{
@@ -264,7 +264,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path: "/items/3",
 			Result: CR{
 				"response": CR{
@@ -279,7 +279,7 @@ func TestApis(t *testing.T) {
 		},
 
 		// обновление null-поля в таблице
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodPost,
 			Body: CR{
@@ -291,7 +291,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path: "/items/3",
 			Result: CR{
 				"response": CR{
@@ -306,7 +306,7 @@ func TestApis(t *testing.T) {
 		},
 
 		// ошибки
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodPost,
 			Status: http.StatusBadRequest,
@@ -317,7 +317,7 @@ func TestApis(t *testing.T) {
 				"error": "field id have invalid type",
 			},
 		},
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodPost,
 			Status: http.StatusBadRequest,
@@ -328,7 +328,7 @@ func TestApis(t *testing.T) {
 				"error": "field title have invalid type",
 			},
 		},
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodPost,
 			Status: http.StatusBadRequest,
@@ -340,7 +340,7 @@ func TestApis(t *testing.T) {
 			},
 		},
 
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodPost,
 			Status: http.StatusBadRequest,
@@ -353,7 +353,7 @@ func TestApis(t *testing.T) {
 		},
 
 		// удаление
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodDelete,
 			Result: CR{
@@ -362,7 +362,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path:   "/items/3",
 			Method: http.MethodDelete,
 			Result: CR{
@@ -371,7 +371,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path:   "/items/3",
 			Status: http.StatusNotFound,
 			Result: CR{
@@ -380,7 +380,7 @@ func TestApis(t *testing.T) {
 		},
 
 		// и немного по другой таблице
-		Case{
+		{
 			Path: "/users/1",
 			Result: CR{
 				"response": CR{
@@ -396,7 +396,7 @@ func TestApis(t *testing.T) {
 			},
 		},
 
-		Case{
+		{
 			Path:   "/users/1",
 			Method: http.MethodPost,
 			Body: CR{
@@ -409,7 +409,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path: "/users/1",
 			Result: CR{
 				"response": CR{
@@ -425,7 +425,7 @@ func TestApis(t *testing.T) {
 			},
 		},
 		// ошибки
-		Case{
+		{
 			Path:   "/users/1",
 			Method: http.MethodPost,
 			Status: http.StatusBadRequest,
@@ -437,7 +437,7 @@ func TestApis(t *testing.T) {
 			},
 		},
 		// не забываем про sql-инъекции
-		Case{
+		{
 			Path:   "/users/",
 			Method: http.MethodPut,
 			Body: CR{
@@ -452,7 +452,7 @@ func TestApis(t *testing.T) {
 				},
 			},
 		},
-		Case{
+		{
 			Path: "/users/2",
 			Result: CR{
 				"response": CR{
@@ -469,13 +469,13 @@ func TestApis(t *testing.T) {
 		},
 		// тут тоже возможна sql-инъекция
 		// если пришло не число на вход - берём дефолтное значене для лимита-оффсета
-		Case{
+		{
 			Path:  "/users",
 			Query: "limit=1'&offset=1\"",
 			Result: CR{
 				"response": CR{
 					"records": []CR{
-						CR{
+						{
 							"user_id":  1,
 							"login":    "rvasily",
 							"password": "love",
@@ -483,7 +483,7 @@ func TestApis(t *testing.T) {
 							"info":     "try update",
 							"updated":  "now",
 						},
-						CR{
+						{
 							"user_id":  2,
 							"login":    "qwerty'",
 							"password": "love\"",
